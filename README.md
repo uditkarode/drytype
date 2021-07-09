@@ -85,5 +85,7 @@ This function has to return a `ValidationResult` object, where `success: boolean
 ```
 The only use of the `in` parameter in `ValidationResult` is to be inserted this way into the default error message. This can be useful for, say, Records where you need to give out additional information about where the validation failed.
 
+**NOTE**: Also have a look at the [tests](https://github.com/uditkarode/drytype/tree/master/tests) for an example usage. Every provided DryType has at least one test present.
+
 That's all you need to know to use this library.
 Happy validatin'!
