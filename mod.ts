@@ -3,7 +3,6 @@ export * from "./utils.ts";
 export { ValidationError } from "./validation-error.ts";
 export * from "./modules/Array.ts";
 export * from "./modules/Record.ts";
-export * from "./modules/String.ts";
 export * from "./modules/StringExtensions.ts";
 export * from "./modules/primitives/BigInt.ts";
 export * from "./modules/primitives/Boolean.ts";
