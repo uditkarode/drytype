@@ -1,0 +1,19 @@
+{
+  "name": "drytype",
+  "version": "0.2.1",
+  "description": "A runtime type-validator with TypeScript in mind",
+  "files": ["lib"],
+  "main": "./lib/mod.js",
+  "types": "./lib/mod.d.ts",
+  "scripts": {
+    "build": "tsc --pretty"
+  },
+  "repository": "https://github.com/uditkarode/drytype",
+  "author": "Udit Karode <udit.karode@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "private": false,
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  }
+}

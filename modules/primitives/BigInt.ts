@@ -1,4 +1,4 @@
-import { makeDryType } from "../../drytype.ts";
+import { makeDryType } from "../../drytype";
 
 /**
  * Validates that a value is a bigint and

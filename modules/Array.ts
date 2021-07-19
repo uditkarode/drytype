@@ -1,5 +1,5 @@
-import { DryType, makeDryType } from "../drytype.ts";
-import { isArray } from "../utils.ts";
+import { DryType, makeDryType } from "../drytype";
+import { isArray } from "../utils";
 
 export const Array = makeDryType<unknown[]>((x) => {
   if (typeof (x) == "object") {

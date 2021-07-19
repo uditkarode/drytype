@@ -1,5 +1,5 @@
-import { ValidationError } from "./validation-error.ts";
-import { ValidationResult } from "./utils.ts";
+import { ValidationError } from "./validation-error";
+import { ValidationResult } from "./utils";
 
 export type DryType<T> = {
   validate(param: unknown): ValidationResult;

@@ -1,5 +1,5 @@
-import { makeDryType } from "../drytype.ts";
-import { dtObj, dtObjStatic } from "../utils.ts";
+import { makeDryType } from "../drytype";
+import { dtObj, dtObjStatic } from "../utils";
 
 function isProperObject(x: unknown): x is Record<string, unknown> {
   return (x != null && typeof x == "object");

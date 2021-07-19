@@ -1,4 +1,4 @@
-import { DryType, UnDryType } from "./drytype.ts";
+import { DryType, UnDryType } from "./drytype";
 
 export type dtObj = { [_: string]: DryType<unknown> };
 
