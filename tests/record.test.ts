@@ -8,7 +8,10 @@ import { String } from "../modules/primitives/String.ts";
 import { Symbol as DrySymbol } from "../modules/primitives/Symbol.ts";
 import { Undefined } from "../modules/primitives/Undefined.ts";
 import { ValidationError } from "../validation-error.ts";
-import { assertThrows } from "https://deno.land/std@0.100.0/testing/asserts.ts";
+import {
+  assertEquals,
+  assertThrows,
+} from "https://deno.land/std@0.100.0/testing/asserts.ts";
 
 const testObj = {
   bigint: BigInt,
@@ -20,6 +23,14 @@ const testObj = {
   symbol: DrySymbol,
   undefined: Undefined,
 };
+
+Deno.test("ExactRecord mutation check", () => {
+  const sample = { username: "uditKarode" };
+
+  ExactRecord({ username: String }).strictValidate(sample);
+
+  assertEquals(sample, { username: "uditKarode" });
+});
 
 Deno.test("ExactRecord", () => {
   ExactRecord(testObj).strictValidate({

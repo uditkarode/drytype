@@ -14,7 +14,8 @@ function isProperObject(x: unknown): x is Record<string, unknown> {
  * @returns an ExactRecord DryType
  */
 export const ExactRecord = <T extends dtObj>(structure: dtObj) => {
-  return makeDryType<dtObjStatic<T>>((x) => {
+  return makeDryType<dtObjStatic<T>>((target) => {
+    const x = Object.assign({}, target);
     if (isProperObject(x) && x != null) {
       const targetLength = Object.keys(x).length;
       const structureLength = Object.keys(structure).length;
