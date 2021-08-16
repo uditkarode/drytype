@@ -1,8 +1,10 @@
 {
   "name": "drytypes",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A runtime type-validator with TypeScript in mind",
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "main": "./lib/mod.js",
   "types": "./lib/mod.d.ts",
   "scripts": {
