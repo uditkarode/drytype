@@ -31,7 +31,6 @@ export const ExactRecord = <T extends dtObj>(structure: dtObj) => {
       for (const [k, v] of Object.entries(structure)) {
         const result = v.validate(x[k]);
         if (!result.success) {
-          console.log("YOOOOO " + result.message);
           return {
             success: false,
             in: k,
