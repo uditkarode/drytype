@@ -20,7 +20,16 @@ export type DryType<T> = {
   toString(): string;
 
   intersect<S>(dt: DryType<S>): DryType<T & S>;
-  union<S>(dt: DryType<S>): DryType<T | S>;
+  /*
+    errorFrom refers to whether the error from the
+    first type, second type, or the default one is
+    to be thrown.
+
+    when this is 0 or undefined, the default error is used
+    when this is 1, the 'left' error is used
+    when this is 2 (or any other value), the 'right' error is used
+  */
+  union<S>(dt: DryType<S>, errorFrom?: number): DryType<T | S>;
 
   tag: string;
 };
@@ -60,6 +69,12 @@ import { Number, String } from "drytype";
 
 String.union(Number).validate(10); // { success: true }
 ```
+
+`union` also takes a second parameter called fromError, which is used when both
+checks fail. If this is set to 0 or undefined, the default error will be used.
+If this is set to 1, the custom error from the DryType on the left will be used,
+if any. Any other value will make it use the custom error from the DryType on
+the right, if any.
 
 `intersect` is the same as TypeScript `&`. `A.intersect(B)` returns a new
 DryType, which now checks if both A and B succeed. For example,
