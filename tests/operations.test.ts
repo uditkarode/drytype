@@ -56,3 +56,17 @@ Deno.test("Throwing Intersection", () => {
     "expected: string, got: undefined, in: farewell",
   );
 });
+
+Deno.test("Throwing Intersection Left", () => {
+  assertThrows(
+    () => {
+      Record({ greeting: String }).intersect(Record({ farewell: String }))
+        .strictValidate({
+          nogreeting: "Hey!",
+          farewell: "Bye!",
+        });
+    },
+    ValidationError,
+    "expected: string, got: undefined, in: greeting",
+  );
+});

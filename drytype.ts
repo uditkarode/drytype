@@ -62,17 +62,15 @@ export const makeDryType = <T>(
           // both failed
           return {
             success: false,
-            message: `expected: ${tag} & ${dt.tag}, got: ${typeof x}${
-              o.in == undefined ? "" : `, in: ${o.in}`
+            message: `expected: ${tag} & ${dt.tag}, got: ${
+              x == null ? x : typeof x
             }`,
           };
         } else if (!o.success && n.success) {
           // new passed
           return {
             success: false,
-            message: `expected: ${tag}, got: ${
-              x == null ? x : typeof x
-            }, in: ${o.in}`,
+            message: o.message,
           };
         } else if (o.success && !n.success) {
           // original passed
@@ -97,7 +95,7 @@ export const makeDryType = <T>(
             success: false,
             message: `expected: ${tag} | ${dt.tag}, got: ${
               x == null ? x : typeof x
-            }${o.in == undefined ? "" : `, in: ${o.in}`}`,
+            }`,
           };
         }
 
