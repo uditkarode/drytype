@@ -31,12 +31,15 @@ export const ExactRecord = <T extends dtObj>(structure: dtObj) => {
       for (const [k, v] of Object.entries(structure)) {
         const result = v.validate(x[k]);
         if (!result.success) {
+          console.log("YOOOOO " + result.message);
           return {
             success: false,
             in: k,
-            message: `expected: ${v.tag}, got: ${
-              x[k] == null ? x[k] : typeof (x[k])
-            }, in: ${k}`,
+            message: (result.message ?? `expected: ${v.tag}, got: ${
+              x[k] == null
+                ? x[k]
+                : typeof (x[k])
+            }`) + `, in: ${k}`,
           };
         } else delete x[k];
       }
