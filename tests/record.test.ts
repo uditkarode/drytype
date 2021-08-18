@@ -3,25 +3,37 @@ import { BigInt } from "../modules/primitives/BigInt.ts";
 import { Boolean } from "../modules/primitives/Boolean.ts";
 import { Function } from "../modules/primitives/Function.ts";
 import { Number } from "../modules/primitives/Number.ts";
-import { Object } from "../modules/primitives/Object.ts";
 import { String } from "../modules/primitives/String.ts";
 import { Symbol as DrySymbol } from "../modules/primitives/Symbol.ts";
 import { Undefined } from "../modules/primitives/Undefined.ts";
 import { ValidationError } from "../validation-error.ts";
+import { makeDryType } from "../drytype.ts";
 import {
   assertEquals,
   assertThrows,
 } from "https://deno.land/std@0.100.0/testing/asserts.ts";
+
+const CustomObject = makeDryType(
+  (x) =>
+    typeof x == "object"
+      ? { success: true }
+      : { success: false, message: "Custom message!" },
+  "CustomObject",
+);
 
 const testObj = {
   bigint: BigInt,
   boolean: Boolean,
   function: Function,
   number: Number,
-  objectOrUndefined: Object.union(Undefined),
+  objectOrUndefined: CustomObject.union(Undefined),
   string: String,
   symbol: DrySymbol,
   undefined: Undefined,
+};
+
+const anotherTest = {
+  something: CustomObject,
 };
 
 Deno.test("ExactRecord mutation check", () => {
@@ -43,6 +55,16 @@ Deno.test("ExactRecord", () => {
     symbol: Symbol(10),
     undefined: undefined,
   });
+});
+
+Deno.test("ExactRecord Custom Error Propogation", () => {
+  assertThrows(
+    () => {
+      ExactRecord(anotherTest).strictValidate({ something: "5" });
+    },
+    ValidationError,
+    "Custom message!, in: something",
+  );
 });
 
 Deno.test("ExactRecord with missing optional property", () => {
@@ -95,5 +117,3 @@ Deno.test("ExactRecord with same number of keys as template, but an extra key (u
     "Extra parameter someExtraField found",
   );
 });
-
-Deno.test;
