@@ -68,7 +68,7 @@ DryType, which now checks if both A and B succeed. For example,
 import { NumberGreaterThan, NumberLessThan } from "drytype";
 
 // a number between between 5 and 10
-NumberGreaterThan(5).intersection(NumberLessThan(10)).validate(7); // { success: true }
+NumberGreaterThan(5).intersect(NumberLessThan(10)).validate(7); // { success: true }
 ```
 
 That covers what a DryType is composed of. A set of useful DryTypes have been
