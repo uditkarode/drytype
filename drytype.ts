@@ -67,15 +67,7 @@ export const makeDryType = <T>(
         const o = validator(x);
         const n = dt.validate(x);
 
-        if (!o.success && !n.success) {
-          // both failed
-          return {
-            success: false,
-            message: `expected: ${tag} & ${dt.tag}, got: ${
-              x == null ? x : typeof x
-            }`,
-          };
-        } else if (!o.success && n.success) {
+        if (!o.success && n.success) {
           // new passed
           return {
             success: false,
