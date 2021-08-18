@@ -13,7 +13,16 @@ export type DryType<T> = {
   toString(): string;
 
   intersect<S>(dt: DryType<S>): DryType<T & S>;
-  union<S>(dt: DryType<S>): DryType<T | S>;
+  /*
+    errorFrom refers to whether the error from the
+    first type, second type, or the default one is
+    to be thrown.
+
+    when this is 0 or undefined, the default error is used
+    when this is 1, the 'left' error is used
+    when this is 2 (or any other value), the 'right' error is used
+  */
+  union<S>(dt: DryType<S>, errorFrom?: number): DryType<T | S>;
 
   tag: string;
 };
@@ -84,18 +93,23 @@ export const makeDryType = <T>(
         return { success: true };
       }, `${tag} & ${dt.tag}`);
     },
-    union: <S>(dt: DryType<S>) => {
+    union: <S>(dt: DryType<S>, errorFrom?: number) => {
       return makeDryType<S | T>((x) => {
         const o = validator(x);
         const n = dt.validate(x);
 
         if (!o.success && !n.success) {
           // both failed
+          const defaultError = `expected: ${tag} | ${dt.tag}, got: ${
+            x == null ? x : typeof x
+          }`;
           return {
             success: false,
-            message: `expected: ${tag} | ${dt.tag}, got: ${
-              x == null ? x : typeof x
-            }`,
+            message: errorFrom == 0 || errorFrom == undefined
+              ? defaultError
+              : errorFrom == 1
+              ? o.message ?? defaultError
+              : n.message ?? defaultError,
           };
         }
 
