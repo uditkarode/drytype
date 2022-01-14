@@ -3,7 +3,7 @@ import { DryType, UnDryType } from "./drytype";
 export type dtObj = { [_: string]: DryType<unknown> };
 
 export type dtObjStatic<O extends dtObj> = {
-  [K in keyof O]: UnDryType<O[keyof O]>;
+  [K in keyof O]: UnDryType<O[K]>;
 };
 
 export type ValidationResult = {
