@@ -8,7 +8,7 @@ import { makeDryType } from "../drytype";
  * @returns an ExactString DryType
  */
 export const ExactString = <S extends string>(str: S) =>
-  makeDryType<string>((x) => {
+  makeDryType<S>((x) => {
     if (typeof (x) == "string") {
       if (x == str) {
         return { success: true };
