@@ -13,7 +13,7 @@ function isProperObject(x: unknown): x is Record<string, unknown> {
  * @param structure the template object
  * @returns an ExactRecord DryType
  */
-export const ExactRecord = <T extends dtObj>(structure: dtObj) => {
+export const ExactRecord = <T extends dtObj>(structure: T) => {
   return makeDryType<dtObjStatic<T>>((target) => {
     const x = Object.assign({}, target);
     if (isProperObject(x) && x != null) {
@@ -70,7 +70,7 @@ export const ExactRecord = <T extends dtObj>(structure: dtObj) => {
  * @param structure the template object
  * @returns a record DryType
  */
-export const Record = <T extends dtObj>(structure: dtObj) => {
+export const Record = <T extends dtObj>(structure: T) => {
   return makeDryType<dtObjStatic<T>>((x) => {
     if (isProperObject(x) && x != null) {
       for (const [k, v] of Object.entries(structure)) {
@@ -99,7 +99,7 @@ export const Record = <T extends dtObj>(structure: dtObj) => {
  * @param structure the template object
  * @returns a partial record DryType
  */
-export const PartialRecord = <T extends dtObj>(structure: dtObj) => {
+export const PartialRecord = <T extends dtObj>(structure: T) => {
   return makeDryType<dtObjStatic<T>>((x) => {
     if (isProperObject(x) && x != null) {
       let someValidated = false;
