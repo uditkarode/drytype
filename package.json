@@ -1,6 +1,6 @@
 {
   "name": "drytypes",
-  "version": "0.4.6",
+  "version": "0.4.8",
   "description": "A runtime type-validator with TypeScript in mind",
   "files": [
     "lib"
@@ -16,6 +16,6 @@
   "private": false,
   "dependencies": {},
   "devDependencies": {
-    "typescript": "^4.3.5"
+    "typescript": "^4.5.4"
   }
 }
