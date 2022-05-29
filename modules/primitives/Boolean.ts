@@ -13,7 +13,7 @@ export const ExactBoolean = <S extends boolean>(val: S) =>
       if (x == val) return { success: true };
       else return { success: false, message: `expected: ${val}, got: ${x}` };
     } else return { success: false };
-  });
+  }, `the boolean ${val}`);
 
 /**
  * Validates that a value is a boolean
