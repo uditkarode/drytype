@@ -1,8 +1,8 @@
 import { makeDryType } from "../drytype";
-import { dtObj, dtObjStatic } from "../utils";
+import { dtObj, dtObjStatic, properType } from "../utils";
 
 function isProperObject(x: unknown): x is Record<string, unknown> {
-  return (x != null && typeof x == "object");
+  return x != null && typeof x == "object";
 }
 
 /**
@@ -16,15 +16,14 @@ function isProperObject(x: unknown): x is Record<string, unknown> {
 export const ExactRecord = <T extends dtObj>(structure: T) => {
   return makeDryType<dtObjStatic<T>>((target) => {
     const x = Object.assign({}, target);
-    if (isProperObject(x) && x != null) {
+    if (isProperObject(x)) {
       const targetLength = Object.keys(x).length;
       const structureLength = Object.keys(structure).length;
 
       if (targetLength > Object.keys(structure).length) {
         return {
           success: false,
-          message:
-            `expected target to have at most ${structureLength} items, had ${targetLength}`,
+          message: `expected target to have at most ${structureLength} items, had ${targetLength}`,
         };
       }
 
@@ -34,21 +33,21 @@ export const ExactRecord = <T extends dtObj>(structure: T) => {
           return {
             success: false,
             in: k,
-            message: (result.message ?? `expected: ${v.tag}, got: ${
-              x[k] == null
-                ? x[k]
-                : typeof (x[k])
-            }`) + `, in: ${k}`,
+            message:
+              (result.message ??
+                `expected: ${v.tag}, got: ${
+                  x[k] == null ? x[k] : typeof x[k]
+                }`) + `, in: ${k}`,
           };
         } else delete x[k];
       }
 
-      const newKeys = Object.keys(x);
+      const extraKeys = Object.keys(x);
 
-      if (newKeys.length > 0) {
+      if (extraKeys.length > 0) {
         return {
           success: false,
-          message: `Extra parameter ${newKeys[0]} found`,
+          message: `Extra parameter ${extraKeys[0]} found`,
         };
       }
 
@@ -56,10 +55,10 @@ export const ExactRecord = <T extends dtObj>(structure: T) => {
     } else {
       return {
         success: false,
-        message: `expected object, received ${x == null ? x : typeof (x)}`,
+        message: `expected object, received ${properType(x)}`,
       };
     }
-  }, "object");
+  }, "exact template object");
 };
 
 /**
@@ -79,7 +78,7 @@ export const Record = <T extends dtObj>(structure: T) => {
           return {
             success: false,
             message: `expected: ${v.tag}, got: ${
-              x[k] == null ? x[k] : typeof (x[k])
+              x[k] == null ? x[k] : typeof x[k]
             }, in: ${k}`,
           };
         }
@@ -88,7 +87,7 @@ export const Record = <T extends dtObj>(structure: T) => {
     } else {
       return { success: false };
     }
-  }, "object");
+  }, "template object");
 };
 
 /**
@@ -106,26 +105,18 @@ export const PartialRecord = <T extends dtObj>(structure: T) => {
 
       for (const [k, v] of Object.entries(structure)) {
         const result = v.validate(x[k]);
-        if (!result.success) {
-          return {
-            success: false,
-            message: `expected: ${v.tag}, got: ${
-              x[k] == null ? x[k] : typeof (x[k])
-            }, in: ${k}`,
-          };
-        } else someValidated = true;
+        if (result.success) someValidated = true;
       }
 
       if (!someValidated) {
         return {
           success: false,
-          message:
-            `expected at least 1 passing element from template, got none`,
+          message: `expected at least 1 passing element from template, got none`,
         };
       }
       return { success: true };
     } else {
       return { success: false, message: `expected: object, got: ${x}` };
     }
-  }, "object");
+  }, "partial template object");
 };
