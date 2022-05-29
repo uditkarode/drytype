@@ -9,7 +9,7 @@ import { makeDryType } from "../drytype";
  */
 export const ExactString = <S extends string>(str: S) =>
   makeDryType<S>((x) => {
-    if (typeof (x) == "string") {
+    if (typeof x == "string") {
       if (x == str) {
         return { success: true };
       } else {
@@ -34,7 +34,7 @@ export const ExactString = <S extends string>(str: S) =>
  */
 export const CommaSepOneOf = (inOneOf: string[]) =>
   makeDryType<string>((x) => {
-    if (typeof (x) == "string") {
+    if (typeof x == "string") {
       const list = x.split(",");
       for (const v of list) {
         if (inOneOf.find((x) => x === v) == undefined) {
@@ -46,4 +46,4 @@ export const CommaSepOneOf = (inOneOf: string[]) =>
       }
       return { success: true };
     } else return { success: false };
-  });
+  }, `comma separated items from ${inOneOf}`);

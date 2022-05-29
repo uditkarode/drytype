@@ -9,11 +9,11 @@ import { makeDryType } from "../../drytype";
  */
 export const ExactNumber = <S extends number>(val: S) =>
   makeDryType<S>((x) => {
-    if (typeof (x) == "number") {
+    if (typeof x == "number") {
       if (x == val) return { success: true };
       else return { success: false, message: `expected: ${val}, got: ${x}` };
     } else return { success: false };
-  });
+  }, `the number ${val}`);
 
 /**
  * Validates that a number is greater than
@@ -24,7 +24,7 @@ export const ExactNumber = <S extends number>(val: S) =>
  */
 export const NumberGreaterThan = (num: number) =>
   makeDryType<number>((x) => {
-    if (typeof (x) == "number") {
+    if (typeof x == "number") {
       if (x > num) return { success: true };
       else {
         return {
@@ -33,7 +33,7 @@ export const NumberGreaterThan = (num: number) =>
         };
       }
     } else return { success: false };
-  });
+  }, `number greater than ${num}`);
 
 /**
  * Validates that a number is less than
@@ -44,7 +44,7 @@ export const NumberGreaterThan = (num: number) =>
  */
 export const NumberLesserThan = (num: number) =>
   makeDryType<number>((x) => {
-    if (typeof (x) == "number") {
+    if (typeof x == "number") {
       if (x < num) return { success: true };
       else {
         return {
@@ -53,12 +53,12 @@ export const NumberLesserThan = (num: number) =>
         };
       }
     } else return { success: false };
-  });
+  }, `number lesser than ${num}`);
 
 /**
  * Validates that a value is a number
  */
 export const Number = makeDryType<number>(
-  (x) => typeof x == "number" ? { success: true } : { success: false },
-  "number",
+  (x) => (typeof x == "number" ? { success: true } : { success: false }),
+  "number"
 );

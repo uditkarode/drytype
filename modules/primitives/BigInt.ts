@@ -9,11 +9,11 @@ import { makeDryType } from "../../drytype";
  */
 export const ExactBigInt = <S extends bigint>(val: S) =>
   makeDryType<S>((x) => {
-    if (typeof (x) == "bigint") {
+    if (typeof x == "bigint") {
       if (x == val) return { success: true };
       else return { success: false, message: `expected: ${val}n, got: ${x}n` };
     } else return { success: false };
-  });
+  }, `the bigint ${val}`);
 
 /**
  * Validates that a bigint is greater than
@@ -24,7 +24,7 @@ export const ExactBigInt = <S extends bigint>(val: S) =>
  */
 export const BigIntGreaterThan = (num: bigint) =>
   makeDryType<bigint>((x) => {
-    if (typeof (x) == "bigint") {
+    if (typeof x == "bigint") {
       if (x > num) return { success: true };
       else {
         return {
@@ -33,7 +33,7 @@ export const BigIntGreaterThan = (num: bigint) =>
         };
       }
     } else return { success: false };
-  });
+  }, `bigint greater than ${num}`);
 
 /**
  * Validates that a bigint is less than
@@ -44,7 +44,7 @@ export const BigIntGreaterThan = (num: bigint) =>
  */
 export const BigIntLesserThan = (num: bigint) =>
   makeDryType<bigint>((x) => {
-    if (typeof (x) == "bigint") {
+    if (typeof x == "bigint") {
       if (x < num) return { success: true };
       else {
         return {
@@ -53,12 +53,12 @@ export const BigIntLesserThan = (num: bigint) =>
         };
       }
     } else return { success: false };
-  });
+  }, `bigint lesser than ${num}`);
 
 /**
  * Validates that a value is a bigint
  */
 export const BigInt = makeDryType<bigint>(
-  (x) => typeof x == "bigint" ? { success: true } : { success: false },
-  "bigint",
+  (x) => (typeof x == "bigint" ? { success: true } : { success: false }),
+  "bigint"
 );
