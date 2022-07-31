@@ -4,9 +4,7 @@ import { ValidationResult } from "./utils.ts";
 export type DryType<T> = {
   validate(param: unknown): ValidationResult;
   // will throw if check fails
-  strictValidate(
-    param: unknown,
-  ): ValidationResult;
+  strictValidate(param: unknown): ValidationResult;
   guard(param: unknown): param is T;
   // will throw if check fails
   strictGuard(param: unknown): param is T;
@@ -27,32 +25,34 @@ export type DryType<T> = {
   tag: string;
 };
 
-const validatorGetter = (
-  validator: (x: unknown) => ValidationResult,
-  tag: string,
-  strict = false,
-) =>
+const validatorGetter =
+  (validator: (x: unknown) => ValidationResult, tag: string, strict = false) =>
   (x: unknown): ValidationResult => {
     const result = validator(x);
 
     if (result.success) return { success: true };
     else {
-      const message = result.message ??
-        `expected: ${tag}, got: ${typeof (x)}${
+      const message =
+        result.message ??
+        `expected: ${tag}, got: ${typeof x}${
           result.in == undefined ? "" : `, in: ${result.in}`
         }`;
 
       if (strict) {
         throw new ValidationError(message);
       } else {
-        return { success: false, message: message };
+        return {
+          success: false,
+          message: message,
+          ...(result.in ? { in: result.in } : {}),
+        };
       }
     }
   };
 
 export const makeDryType = <T>(
   validator: (x: unknown) => ValidationResult,
-  tag = "unknown",
+  tag = "unknown"
 ): DryType<T> => {
   return {
     validate: validatorGetter(validator, tag, false),
@@ -97,11 +97,12 @@ export const makeDryType = <T>(
           }`;
           return {
             success: false,
-            message: errorFrom == 0 || errorFrom == undefined
-              ? defaultError
-              : errorFrom == 1
-              ? o.message ?? defaultError
-              : n.message ?? defaultError,
+            message:
+              errorFrom == 0 || errorFrom == undefined
+                ? defaultError
+                : errorFrom == 1
+                ? o.message ?? defaultError
+                : n.message ?? defaultError,
           };
         }
 
