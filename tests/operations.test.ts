@@ -16,12 +16,15 @@ Deno.test("Union Right", () => {
 });
 
 Deno.test("ExactRecord Union", () => {
-  ExactRecord({ one: String }).union(ExactRecord({ two: String }))
+  ExactRecord({ one: String })
+    .union(ExactRecord({ two: String }))
     .strictValidate({ two: "two" });
 });
 
 Deno.test("ExactString Union", () => {
-  ExactString("One").union(ExactString("Two")).union(ExactString("Three"))
+  ExactString("One")
+    .union(ExactString("Two"))
+    .union(ExactString("Three"))
     .strictValidate("Three");
 });
 
@@ -47,7 +50,8 @@ const makeCustomErrDt = (str: string, tag: string) =>
 Deno.test("Throwing Union Custom Message Left", () => {
   assertThrows(
     () => {
-      makeCustomErrDt("Hohoho!", "CustomStrOne").union(Undefined, 1)
+      makeCustomErrDt("Hohoho!", "CustomStrOne")
+        .union(Undefined, 1)
         .strictValidate(10);
     },
     ValidationError,
@@ -58,37 +62,31 @@ Deno.test("Throwing Union Custom Message Left", () => {
 Deno.test("Throwing Union Custom Message Right", () => {
   assertThrows(
     () => {
-      Undefined.union(makeCustomErrDt("Custom two!", "CustomStrTwo"), 2)
-        .strictValidate(10);
+      Undefined.union(
+        makeCustomErrDt("Custom two!", "CustomStrTwo"),
+        2,
+      ).strictValidate(10);
     },
     ValidationError,
     "Custom two!",
   );
 });
 
-Deno.test("Throwing Union Custom Message Right", () => {
-  assertThrows(
-    () => {
-      String.union(Undefined).strictValidate(10);
-    },
-    ValidationError,
-    "expected: string | undefined, got: number",
-  );
-});
-
 // Intersection
 Deno.test("Intersection", () => {
-  Record({ greeting: String }).intersect(Record({ farewell: String }))
+  Record({ greeting: String })
+    .intersect(Record({ farewell: String }))
     .strictValidate({
       greeting: "Hey!",
       farewell: "Bye!",
     });
 });
 
-Deno.test("Throwing Intersection", () => {
+Deno.test("Throwing Intersection Right", () => {
   assertThrows(
     () => {
-      Record({ greeting: String }).intersect(Record({ farewell: String }))
+      Record({ greeting: String })
+        .intersect(Record({ farewell: String }))
         .strictValidate({
           greeting: "Hey!",
           nofarewell: "Bye!",
@@ -102,10 +100,26 @@ Deno.test("Throwing Intersection", () => {
 Deno.test("Throwing Intersection Left", () => {
   assertThrows(
     () => {
-      Record({ greeting: String }).intersect(Record({ farewell: String }))
+      Record({ greeting: String })
+        .intersect(Record({ farewell: String }))
         .strictValidate({
           nogreeting: "Hey!",
           farewell: "Bye!",
+        });
+    },
+    ValidationError,
+    "expected: string, got: undefined, in: greeting",
+  );
+});
+
+Deno.test("Throwing Intersection Both Invalid", () => {
+  assertThrows(
+    () => {
+      Record({ greeting: String })
+        .intersect(Record({ farewell: String }))
+        .strictValidate({
+          nogreeting: "Hey!",
+          nofarewell: "Bye!",
         });
     },
     ValidationError,

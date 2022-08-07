@@ -5,5 +5,5 @@ import { makeDryType } from "../../drytype.ts";
  */
 export const Function = makeDryType<Function>(
   (x) => (typeof x == "function" ? { success: true } : { success: false }),
-  "function"
+  "function",
 );

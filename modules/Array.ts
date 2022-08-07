@@ -27,9 +27,11 @@ export const Tuple = <S extends DryType<unknown>[]>(tt: S) =>
         if (!validated.success) {
           return {
             success: false,
-            message: `tuple contains unexpected: ${properType(
-              x[i]
-            )}, expected: ${tt[i].tag}, index: ${i}`,
+            message: `tuple contains unexpected: ${
+              properType(
+                x[i],
+              )
+            }, expected: ${tt[i].tag}, index: ${i}`,
           };
         }
       }
@@ -47,9 +49,11 @@ export const ArrayOf = <S>(dt: DryType<S>) =>
           if (!dt.validate(v).success) {
             return {
               success: false,
-              message: `array contains unexpected: ${properType(
-                v
-              )}, expected: ${dt.tag}, index: ${i}`,
+              message: `array contains unexpected: ${
+                properType(
+                  v,
+                )
+              }, expected: ${dt.tag}, index: ${i}`,
             };
           }
         }

@@ -60,5 +60,5 @@ export const BigIntLesserThan = (num: bigint) =>
  */
 export const BigInt = makeDryType<bigint>(
   (x) => (typeof x == "bigint" ? { success: true } : { success: false }),
-  "bigint"
+  "bigint",
 );
