@@ -27,9 +27,9 @@ export const Tuple = <S extends DryType<unknown>[]>(tt: S) =>
         if (!validated.success) {
           return {
             success: false,
-            message: `tuple contains unexpected: ${properType(x)}, expected: ${
-              tt[i].tag
-            }, index: ${i}`,
+            message: `tuple contains unexpected: ${properType(
+              x[i]
+            )}, expected: ${tt[i].tag}, index: ${i}`,
           };
         }
       }
