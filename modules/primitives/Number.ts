@@ -60,5 +60,5 @@ export const NumberLesserThan = (num: number) =>
  */
 export const Number = makeDryType<number>(
   (x) => (typeof x == "number" ? { success: true } : { success: false }),
-  "number"
+  "number",
 );

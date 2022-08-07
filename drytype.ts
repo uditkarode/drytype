@@ -32,8 +32,7 @@ const validatorGetter =
 
     if (result.success) return { success: true };
     else {
-      const message =
-        result.message ??
+      const message = result.message ??
         `expected: ${tag}, got: ${typeof x}${
           result.in == undefined ? "" : `, in: ${result.in}`
         }`;
@@ -52,7 +51,7 @@ const validatorGetter =
 
 export const makeDryType = <T>(
   validator: (x: unknown) => ValidationResult,
-  tag = "unknown"
+  tag = "unknown",
 ): DryType<T> => {
   return {
     validate: validatorGetter(validator, tag, false),
@@ -79,6 +78,12 @@ export const makeDryType = <T>(
             success: false,
             message: n.message,
           };
+        } else if (!o.success && !n.success) {
+          // both failed
+          return {
+            success: false,
+            message: o.message,
+          };
         }
 
         // both passed
@@ -97,12 +102,11 @@ export const makeDryType = <T>(
           }`;
           return {
             success: false,
-            message:
-              errorFrom == 0 || errorFrom == undefined
-                ? defaultError
-                : errorFrom == 1
-                ? o.message ?? defaultError
-                : n.message ?? defaultError,
+            message: errorFrom == 0 || errorFrom == undefined
+              ? defaultError
+              : errorFrom == 1
+              ? o.message ?? defaultError
+              : n.message ?? defaultError,
           };
         }
 

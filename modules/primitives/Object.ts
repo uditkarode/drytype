@@ -8,5 +8,5 @@ import { makeDryType } from "../../drytype";
 // deno-lint-ignore ban-types
 export const Object = makeDryType<object>(
   (x) => (typeof x == "object" ? { success: true } : { success: false }),
-  "object"
+  "object",
 );
